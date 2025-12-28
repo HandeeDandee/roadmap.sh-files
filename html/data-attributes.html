@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- HTML is designed with extensibility in mind for data that should be associated with a particular element but ned not have any defined meaning. 
+     data-* attributes are a way to store custom, non-visible data directly on HTML elements so that JavaScript (and CSS, indirectly) can read and use it. 
+     Don't affect layout or behavior on their own, they're just a structured place to keep extra information.
+     -->
+    <!-- Basic Syntax -->
+    <div data-user-id="42" data-role="admin"></div>
+    <!-- RULES
+        - Must start with data-
+        - After data-, use lowercase letters, numbers and hyphens
+        - Values are always strings in HTML 
+     -->
+    <!-- Why they exist
+     Before data-*, developers used things like:
+        - Extra classes
+        - Hidden inputs
+        - Non-standard attributes (invalid HTML)
+     -->
+    <!-- data-* attributes are:
+        - Valid HTML
+        - Easy to read
+        - Designed specifically for JS interaction
+     -->
+    <!-- EXAMPLE: Reading data-* in Javascript -->
+    <!-- Using dataset (most common) -->
+    <button data-action="save" data-item-id="123">Save</button>
+    <script>
+        const btn = document.querySelector("button");
+
+        console.log(btn.dataset.action); // "save"
+        console.log(btn.dataset.itemId); // "123"
+    </script>
+    <!-- Important Conversions
+        - data-item-id -> dataset.itemId
+        - Hyphens become camelCase
+        - Values remain strings
+    -->
+    <!-- Writing / Updating data-* with Javascript -->
+    <script>
+        btn.dataset.action = "delete";
+        btn.dataset.itemId = 456;
+    </script>
+    <!-- HTML becomes: -->
+    <button data-action="delete" data-item-id="456"></button>
+    <!-- Keep in mind, the above JavaScript only changes the ATTRIBUTES after loading the code, not the actual code itself. -->
+    <!-- Accessing with getAttribute -->
+    <!-- You can also do: -->
+    <script>
+        btn.getAttribute("data-action"); // "delete"
+    </script>
+    <!-- Useful when:
+        - The attribute name is dynamic
+        - You don't want camelCase conversion (could be most useful for readability)
+    -->
+    <!-- Using data-* with event handling (very common) -->
+    <button data-id="7" data-type="post">edit</button>
+    <script>
+        document.addEventListener("click", (e) => {  // event object (e)
+            /* When a click happens, the browser creates an Event object and passes it in.
+                Important properties:
+                    - e.target -> the actual element clicked
+                    - e.currentTarget -> the element the listener is attached to (document)
+            */
+            if (e.target.matches("button")) {
+                /* What this checks:
+                    - Matches ("button") tests:
+                        - Does the clicked element match this CSS selector?
+                    - So this line means:
+                        - Only continue if the thing that was clicked is a <button>.
+                    - This prevents the code from running for clicks on:
+                        - Divs
+                        - Paragraphs
+                        - The document itself
+                */
+                const { id, type } = e.target.dataset;
+                /* Destructuring from dataset
+                    What dataset is:
+                        - An object containing all data-* attributes
+                        - Automatically converts:
+                            - data-id -> dataset.id
+                            - data-type -> dataset.type
+                    
+                            The line above is shorthand for:
+                    const id = e.target.dataset.id;
+                    const type = e.target.dataset.type;
+
+                    This:
+                        - Extracts values
+                        - Creates local variables id and type
+                */
+                console.log(id, type);
+            }
+        });
+
+        /* Why this pattern is powerful
+            This single script can handle many buttons without changing the JavaScript.
+
+            Each click logs the correct data because:
+                - e.target is the clicked button
+                - dataset belongs to that button
+        */
+
+        /* Full flow in plain English
+            1. User clicks somewhere on the page
+            2. The document hears the click
+            3. The script checks:
+                - "Was a button clicked?"
+            4. If yes:
+                - Read that button's data-* attributes
+                - Extract id and type
+                - Log them
+        
+        */
+    </script>
+    <!-- This is called event delegation and is a major use case for data-* -->
+    <!-- data-* and CSS (limited use) -->
+    <!-- CSS can read data attributes, but not use them as values (mostly): -->
+    <style>
+        button[data-type="post"] {
+            background-color: blue;
+            /* YOU CANNOT DO: */
+            color: attr(data-color);
+            /* not supported in most cases */
+        }
+    </style>
+    <!-- Common real-world uses
+        - IDs for database items
+        - UI state (open / closed, active / inactive)
+        - Action types (data-action="delete")
+        - Configuration options
+        - Analytics hooks
+    -->
+    <!-- Example: -->
+    <li data-completed="true" data-priority="high">Task</li>
+    <!-- What NOT to use data-* for:
+        - Large data blobs (JSON Objects)
+        - Sensitive data (it's visible in the DOM)
+        - THings that belong in real attributes (href, src, disabled)
+    -->
+    <!-- Key Takeaways
+        - data-* = custom metadata for elements
+        - Accessible via element.dataset
+        - Clean, valid, and JS-friendly
+        - Great for UI logic and event handling
+    -->
+</body>
+
+</html>
