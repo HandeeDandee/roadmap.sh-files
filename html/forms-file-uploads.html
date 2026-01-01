@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <form action="" method="post" enctype="multipart/form-data">
+            <label for="video">Video</label>
+            <input type="file" name="video" id="video" accept="video/*" />
+            <button class="text-white bg-blue-500 px-4 py-2 rounded-md my-4">Submit</button>
+        </form>
+        <video controls class="aspect-video w-full">
+            Your browser does not support the video tag
+        </video>
+    </div>
+</body>
+
+</html>

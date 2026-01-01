@@ -14,7 +14,8 @@ When a browser loads a webpage, it requests many resources at once:
 - images
 - fonts
 
-Not all of theses are equally important.
+> [!NOTE]
+> Not all of theses are equally important.
 For Example:
 - HTML and CSS are critical
 - a background image can wait
